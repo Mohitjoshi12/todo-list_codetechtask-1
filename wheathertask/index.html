@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weather App</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-image: linear-gradient(to bottom right, #3498db, #2ecc71);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .weather-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    .weather-icon {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+    .weather-info {
+        margin-bottom: 20px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #2ecc71;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #27ae60;
+    }
+</style>
+</head>
+<body>
+    <div class="weather-container">
+        <h2>Weather App</h2>
+        <div class="weather-info">
+            <p id="location"></p>
+            <img src="" alt="Weather Icon" class="weather-icon" id="weather-icon">
+            <p id="temperature"></p>
+            <p id="description"></p>
+        </div>
+        <button onclick="getWeather()">Get Weather</button>
+    </div>
+
+    <script>
+        function getWeather() {
+            const apiKey = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+            const city = 'New York'; // You can change the city here
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    const location = data.name;
+                    const temperature = data.main.temp;
+                    const description = data.weather[0].description;
+                    const icon = data.weather[0].icon;
+
+                    document.getElementById('location').textContent = location;
+                    document.getElementById('temperature').textContent = `Temperature: ${temperature}°C`;
+                    document.getElementById('description').textContent = `Description: ${description}`;
+                    document.getElementById('weather-icon').src = `http://openweathermap.org/img/w/${icon}.png`;
+                })
+                .catch(error => {
+                    console.log('Error fetching weather data:', error);
+                    alert('Error fetching weather data. Please try again later.');
+                });
+        }
+    </script>
+</body>
+</html>
